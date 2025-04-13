@@ -25,7 +25,7 @@ title.Font = Enum.Font.SourceSansBold
 title.TextSize = 18
 title.Parent = frame
 
--- Notepad Text (Main Area)
+-- Notepad Text
 local notepadText = Instance.new("TextBox")
 notepadText.Size = UDim2.new(1, -10, 1, -50)
 notepadText.Position = UDim2.new(0, 5, 0, 35)
@@ -38,7 +38,7 @@ notepadText.TextSize = 14
 notepadText.ClearTextOnFocus = false
 notepadText.TextWrapped = true
 notepadText.MultiLine = true
-notepadText.Text = "Welcome to Notepad. You can edit this text and save your notes!"
+notepadText.Text = "Welcome to Notepad. You can edit this text and save your notes!\n\n--- Updates ---\nMade the hide/show button draggable"
 notepadText.Parent = frame
 
 -- Close Button
@@ -62,9 +62,45 @@ toggleButton.Text = "Hide Notepad"
 toggleButton.TextColor3 = Color3.new(1, 1, 1)
 toggleButton.Font = Enum.Font.SourceSansBold
 toggleButton.TextSize = 14
-toggleButton.Active = true
-toggleButton.Draggable = true -- Make toggle button draggable
 toggleButton.Parent = gui
+
+-- Make Toggle Button Draggable
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = input.Position - dragStart
+		toggleButton.Position = UDim2.new(
+			startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y
+		)
+	end
+end
+
+toggleButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = toggleButton.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+toggleButton.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(update)
 
 -- Help Button
 local helpButton = Instance.new("TextButton")
@@ -77,7 +113,7 @@ helpButton.Font = Enum.Font.SourceSansBold
 helpButton.TextSize = 14
 helpButton.Parent = frame
 
--- Help GUI (For Notepad)
+-- Help GUI
 local helpGui = Instance.new("Frame")
 helpGui.Size = UDim2.new(0, 300, 0, 150)
 helpGui.Position = UDim2.new(0.5, -150, 0.5, -75)
@@ -121,18 +157,18 @@ helpClose.Parent = helpGui
 
 -- Button Logic
 closeButton.MouseButton1Click:Connect(function()
-    gui:Destroy()
+	gui:Destroy()
 end)
 
 toggleButton.MouseButton1Click:Connect(function()
-    frame.Visible = not frame.Visible
-    toggleButton.Text = frame.Visible and "Hide Notepad" or "Show Notepad"
+	frame.Visible = not frame.Visible
+	toggleButton.Text = frame.Visible and "Hide Notepad" or "Show Notepad"
 end)
 
 helpButton.MouseButton1Click:Connect(function()
-    helpGui.Visible = true
+	helpGui.Visible = true
 end)
 
 helpClose.MouseButton1Click:Connect(function()
-    helpGui.Visible = false
+	helpGui.Visible = false
 end)
