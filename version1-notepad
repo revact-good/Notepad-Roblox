@@ -1,0 +1,136 @@
+-- Create GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "ToggleNotepadGui"
+gui.ResetOnSpawn = false
+gui.Parent = game.CoreGui
+
+-- Main Notepad Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 400, 0, 250)
+frame.Position = UDim2.new(0.5, -200, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BorderColor3 = Color3.fromRGB(60, 60, 60)
+frame.Active = true
+frame.Draggable = true
+frame.Visible = true
+frame.Parent = gui
+
+-- Title Bar
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+title.Text = "📝 Notepad"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 18
+title.Parent = frame
+
+-- Notepad Text (Main Area)
+local notepadText = Instance.new("TextBox")
+notepadText.Size = UDim2.new(1, -10, 1, -50)
+notepadText.Position = UDim2.new(0, 5, 0, 35)
+notepadText.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+notepadText.TextColor3 = Color3.fromRGB(0, 255, 0)
+notepadText.TextXAlignment = Enum.TextXAlignment.Left
+notepadText.TextYAlignment = Enum.TextYAlignment.Top
+notepadText.Font = Enum.Font.Code
+notepadText.TextSize = 14
+notepadText.ClearTextOnFocus = false
+notepadText.TextWrapped = true
+notepadText.MultiLine = true
+notepadText.Text = "Welcome to Notepad. You can edit this text and save your notes!"
+notepadText.Parent = frame
+
+-- Close Button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 60, 0, 30)
+closeButton.Position = UDim2.new(1, -65, 0, 0)
+closeButton.BackgroundColor3 = Color3.fromRGB(170, 50, 50)
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextSize = 18
+closeButton.Parent = frame
+
+-- Toggle Button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 100, 0, 30)
+toggleButton.Position = UDim2.new(0.5, -50, 0.9, 0)
+toggleButton.AnchorPoint = Vector2.new(0.5, 0)
+toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+toggleButton.Text = "Hide Notepad"
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 14
+toggleButton.Parent = gui
+
+-- Help Button
+local helpButton = Instance.new("TextButton")
+helpButton.Size = UDim2.new(0, 60, 0, 30)
+helpButton.Position = UDim2.new(0, 5, 0, 0)
+helpButton.BackgroundColor3 = Color3.fromRGB(50, 100, 170)
+helpButton.Text = "Help"
+helpButton.TextColor3 = Color3.new(1, 1, 1)
+helpButton.Font = Enum.Font.SourceSansBold
+helpButton.TextSize = 14
+helpButton.Parent = frame
+
+-- Help GUI (For Notepad)
+local helpGui = Instance.new("Frame")
+helpGui.Size = UDim2.new(0, 300, 0, 150)
+helpGui.Position = UDim2.new(0.5, -150, 0.5, -75)
+helpGui.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+helpGui.BorderColor3 = Color3.fromRGB(100, 100, 100)
+helpGui.Visible = false
+helpGui.Active = true
+helpGui.Draggable = true
+helpGui.Parent = gui
+
+local helpTitle = Instance.new("TextLabel")
+helpTitle.Size = UDim2.new(1, 0, 0, 30)
+helpTitle.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+helpTitle.Text = "❓ Help - Notepad"
+helpTitle.TextColor3 = Color3.new(1, 1, 1)
+helpTitle.Font = Enum.Font.SourceSansBold
+helpTitle.TextSize = 16
+helpTitle.Parent = helpGui
+
+local helpText = Instance.new("TextLabel")
+helpText.Size = UDim2.new(1, -10, 1, -40)
+helpText.Position = UDim2.new(0, 5, 0, 35)
+helpText.BackgroundTransparency = 1
+helpText.TextColor3 = Color3.new(1, 1, 1)
+helpText.Text = "This is the Notepad GUI.\n\nYou can drag it, hide it, or close it. Write down your notes or any other important text here."
+helpText.Font = Enum.Font.SourceSans
+helpText.TextWrapped = true
+helpText.TextYAlignment = Enum.TextYAlignment.Top
+helpText.TextSize = 14
+helpText.Parent = helpGui
+
+local helpClose = Instance.new("TextButton")
+helpClose.Size = UDim2.new(0, 40, 0, 30)
+helpClose.Position = UDim2.new(1, -45, 0, 0)
+helpClose.BackgroundColor3 = Color3.fromRGB(170, 50, 50)
+helpClose.Text = "X"
+helpClose.TextColor3 = Color3.new(1, 1, 1)
+helpClose.Font = Enum.Font.SourceSansBold
+helpClose.TextSize = 16
+helpClose.Parent = helpGui
+
+-- Button Logic
+closeButton.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
+
+toggleButton.MouseButton1Click:Connect(function()
+    frame.Visible = not frame.Visible
+    toggleButton.Text = frame.Visible and "Hide Notepad" or "Show Notepad"
+end)
+
+helpButton.MouseButton1Click:Connect(function()
+    helpGui.Visible = true
+end)
+
+helpClose.MouseButton1Click:Connect(function()
+    helpGui.Visible = false
+end)
